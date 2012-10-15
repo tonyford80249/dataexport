@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+">
+
+  <!-- bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+      <property name="url" value="jdbc:oracle:thin:@ods-dev:1521:odsd" />      
+      <property name="url" value="jdbc:oracle:thin:@nigeria:1521:odsd" />
+      <property name="username" value="STATE_EQUAL_OWNER" />
+      <property name="password" value="state_equal_owner" />
+  </bean -->
+  
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+         <property name="url" value="jdbc:oracle:thin:@nigeria:1521:xe"/>
+        <property name="username" value="STATE_EQUAL_OWNER"/>
+        <property name="password" value="state_equal_owner"/>
+         <property name="maxIdle" value="3000"/>
+        <property name="maxWait" value="10000"/>
+        <property name="defaultAutoCommit" value="true"/>
+         <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeout" value="600"/>
+        <property name="initialSize" value="4" />
+         <property name="maxActive" value="24" />
+    </bean>
+  
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+     <property name="dataSource" ref="dataSource" />    
+  </bean>
+  
+  <bean id="exporter" class="com.aisoft.data.export.GenerateStateEqualLoadFile"> 
+    <property name="jdbcTemplate" ref="jdbcTemplate" />
+  </bean>
+   
+</beans>
